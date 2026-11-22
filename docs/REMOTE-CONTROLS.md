@@ -4,8 +4,6 @@ This is the owner-provided Beautyrest Black remote used with the tested split-be
 
 <img src="https://raw.githubusercontent.com/reboot-digital/homebridge-beautyrest-local/main/docs/images/beautyrest-black-remote.jpg" alt="Beautyrest Black physical remote reference" width="220">
 
-The public image is a cropped, resized copy with EXIF and location metadata removed. The original photo is not distributed.
-
 | Physical remote function | Plugin control | Coverage |
 | --- | --- | --- |
 | Head up/down | Head Up / Head Down | Brief 650 ms nudges followed by RELEASE, rather than continuous hold. |

@@ -12,7 +12,7 @@ Built and maintained by **RebootDigital**. This is an independent community proj
 
 ## In Apple Home
 
-Real iPhone screenshots from the original working installation, with the surrounding home and room photo removed. These show the existing personal control names; version 1.2.0 and later call the saved preset **Position 1**, rather than “Lounge.” Apple Home may shorten longer tile labels.
+Control each side from Apple Home. Side names are customizable; Apple Home may shorten longer tile labels.
 
 <p>
   <img src="https://raw.githubusercontent.com/reboot-digital/homebridge-beautyrest-local/main/docs/images/apple-home-my-side.png" alt="Apple Home momentary switches for the first bed side" width="320">
@@ -25,7 +25,7 @@ Real iPhone screenshots from the original working installation, with the surroun
 
 <img src="https://raw.githubusercontent.com/reboot-digital/homebridge-beautyrest-local/main/docs/images/beautyrest-black-remote.jpg" alt="Beautyrest Black remote used with the tested split-bed setup, showing Snore and massage timer buttons" width="220">
 
-The remote used with the tested setup. The photo is cropped and its location metadata removed. See the [remote button coverage table](docs/REMOTE-CONTROLS.md) for supported functions and remaining differences. A matching remote does not establish controller compatibility.
+Beautyrest Black remote from the tested setup. See [remote button coverage](docs/REMOTE-CONTROLS.md) for supported functions. A matching remote alone does not establish compatibility.
 
 ## Compatibility
 
@@ -66,9 +66,7 @@ The plugin is distributed on [npm](https://www.npmjs.com/package/homebridge-beau
 npm install -g homebridge-beautyrest-local@1.3.0
 ```
 
-If npm reports “Not found,” use the GitHub release package above. Homebridge search depends on npm publication and indexing, so search results can lag the first release. A GitHub release alone does not establish that the package is indexed.
-
-This project does not currently claim Homebridge Verified status.
+If a broad search finds no results, search for the full package name: `homebridge-beautyrest-local`.
 
 ## Find your controller IDs
 
@@ -165,7 +163,7 @@ npm pack --dry-run
 
 Tests use fake mDNS advertisements, loopback TCP controllers, and real Homebridge/HAP accessory classes with the hardware transport replaced. They do not discover or operate your bed. Tests cover framing, invalid responses, timeouts, movement release/recovery, massage progression, same-side concurrency, cached accessories, momentary resets, and configuration validation.
 
-Physical experience is limited to the single split bed described above. Version 1.2.0’s transport changes were covered by automated tests. For version 1.3.0, the owner confirmed Snore’s expected position and stopping, plus normal native timer-button behavior, on My Side. Exact timer-duration selection/expiry and the new controls on the second side were not separately verified. See the remote coverage table.
+See [compatibility](docs/COMPATIBILITY.md) and [remote control coverage](docs/REMOTE-CONTROLS.md) for physical test results and remaining limitations.
 
 ## Support the project
 
