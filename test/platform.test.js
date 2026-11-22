@@ -44,10 +44,18 @@ test('real HAP registration exposes fourteen switches per side without hardware 
   }
   assert.equal(calls, 0);
 });
-test('empty, duplicate, malformed and excessive sides register nothing', async () => {
-  for (const config of [{}, { sides: [] }, { sides: [sides[0], sides[0]] }, { sides: [{ name: ' ', id: sides[0].id }] }, { sides: [sides[0], sides[1], sides[0]] }, { sides: [{ name: 'Side', id: 'invalid' }] }]) {
-    const f = await setup(config); f.api.emit('didFinishLaunching');
-    assert.equal(f.registered.length, 0); assert.ok(f.messages.some(m => m.level === 'error'));
+test('unconfigured or invalid platforms stay inactive and preserve cached accessories', async () => {
+  const previous = await setup(); previous.api.emit('didFinishLaunching');
+  for (const config of [null, {}, { sides: null }, { sides: [] }, { sides: [null] }, { sides: [sides[0], sides[0]] }, { sides: [{ name: ' ', id: sides[0].id }] }, { sides: [sides[0], sides[1], sides[0]] }, { sides: [{ name: 'Side', id: 'invalid' }] }]) {
+    let calls = 0;
+    const f = await setup(config, async () => calls++);
+    for (const accessory of previous.registered) f.platform.configureAccessory(accessory);
+    f.api.emit('didFinishLaunching');
+    assert.equal(f.registered.length, 0);
+    assert.equal(f.removed.length, 0);
+    assert.equal(f.updated.length, 0);
+    assert.equal(calls, 0);
+    assert.ok(f.messages.some(m => m.level === 'error'));
   }
 });
 test('cached accessories keep UUIDs across rename and stale controls are removed', async () => {
