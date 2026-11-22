@@ -32,12 +32,12 @@ function control(fixture, name) {
   const accessory = fixture.registered.find(a => a.displayName === name);
   return accessory.getService(fixture.api.hap.Service.Switch).getCharacteristic(fixture.api.hap.Characteristic.On);
 }
-test('real HAP registration exposes twelve switches per side without hardware traffic', async () => {
+test('real HAP registration exposes fourteen switches per side without hardware traffic', async () => {
   let calls = 0;
   const f = await setup(undefined, async () => calls++);
   f.api.emit('didFinishLaunching');
-  assert.equal(f.registered.length, 24);
-  assert.equal(new Set(f.registered.map(a => a.UUID)).size, 24);
+  assert.equal(f.registered.length, 28);
+  assert.equal(new Set(f.registered.map(a => a.UUID)).size, 28);
   for (const accessory of f.registered) {
     const on = accessory.getService(f.api.hap.Service.Switch).getCharacteristic(f.api.hap.Characteristic.On);
     assert.equal(await on.handleGetRequest(), false);
@@ -55,7 +55,7 @@ test('cached accessories keep UUIDs across rename and stale controls are removed
   const next = await setup({ sides: [{ ...sides[0], name: 'Renamed' }] });
   for (const accessory of old.registered) next.platform.configureAccessory(accessory);
   next.api.emit('didFinishLaunching');
-  assert.equal(next.registered.length, 0); assert.equal(next.removed.length, 12); assert.equal(next.updated.length, 12);
+  assert.equal(next.registered.length, 0); assert.equal(next.removed.length, 14); assert.equal(next.updated.length, 14);
   assert.ok(next.updated.every(a => a.displayName.startsWith('Renamed ')));
 });
 test('momentary writes reset; false writes are no-ops; same side is busy while another side works', async () => {
@@ -84,4 +84,28 @@ test('hardware failures return HAP error, reset the switch and omit network iden
   assert.ok(f.messages.some(m => m.level === 'warn'));
   assert.ok(!JSON.stringify(f.messages).includes('192.0.2.1'));
   assert.ok(!JSON.stringify(f.messages).includes(sides[0].id));
+});
+
+test('upgrade adds only Snore and timer to each side and preserves all existing accessories', async () => {
+  const old = await setup(); old.api.emit('didFinishLaunching');
+  const previous = old.registered.filter(a => !a.displayName.endsWith(' Snore') && !a.displayName.endsWith(' Massage Timer Cycle'));
+  assert.equal(previous.length, 24);
+  const next = await setup();
+  for (const accessory of previous) next.platform.configureAccessory(accessory);
+  next.api.emit('didFinishLaunching');
+  assert.equal(next.removed.length, 0);
+  assert.equal(next.registered.length, 4);
+  assert.deepEqual(next.registered.map(a => a.displayName).sort(), ['Side A Massage Timer Cycle','Side A Snore','Side B Massage Timer Cycle','Side B Snore']);
+});
+test('new switches forward the command once and reset to Off', async () => {
+  const calls = [];
+  const f = await setup(undefined, async (id, command) => calls.push([id, command]));
+  f.api.emit('didFinishLaunching');
+  for (const [suffix, command] of [['Snore','snore'], ['Massage Timer Cycle','massageTimer']]) {
+    const on = control(f, 'Side A ' + suffix);
+    await on.handleSetRequest(true); await delay(480);
+    assert.equal(on.value, false);
+    assert.deepEqual(calls.at(-1), [sides[0].id, command]);
+  }
+  assert.equal(calls.length, 2);
 });

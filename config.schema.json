@@ -2,7 +2,7 @@
   "pluginAlias": "BeautyrestLocal",
   "pluginType": "platform",
   "singular": true,
-  "headerDisplay": "Local controls for compatible Beautyrest adjustable bases. Every switch is momentary; Off is not the bed\u2019s actual state. Light and massage controls toggle. Tested on one split Beautyrest Black bed.",
+  "headerDisplay": "14 local momentary controls per side for compatible Beautyrest bases, including Snore and Massage Timer Cycle. Off is not the physical state. The timer cycles the controller selection; HomeKit does not report its duration.",
   "schema": {
     "type": "object",
     "properties": {

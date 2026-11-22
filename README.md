@@ -12,7 +12,7 @@ Built and maintained by **RebootDigital**. This is an independent community proj
 
 ## In Apple Home
 
-Real iPhone screenshots from the original working installation, with the surrounding home and room photo removed. These show the existing personal control names; version 1.2.0 calls the saved preset **Position 1**, rather than “Lounge.” Apple Home may shorten longer tile labels.
+Real iPhone screenshots from the original working installation, with the surrounding home and room photo removed. These show the existing personal control names; version 1.2.0 and later call the saved preset **Position 1**, rather than “Lounge.” Apple Home may shorten longer tile labels.
 
 <p>
   <img src="https://raw.githubusercontent.com/reboot-digital/homebridge-beautyrest-local/main/docs/images/apple-home-my-side.png" alt="Apple Home momentary switches for the first bed side" width="320">
@@ -20,6 +20,12 @@ Real iPhone screenshots from the original working installation, with the surroun
 </p>
 
 **Every tile is a button, not a status indicator.** Switches return to Off after a command. Off does not mean that the bed is flat, its light is off, or massage is stopped.
+
+### Physical remote reference
+
+<img src="https://raw.githubusercontent.com/reboot-digital/homebridge-beautyrest-local/main/docs/images/beautyrest-black-remote.jpg" alt="Beautyrest Black remote used with the tested split-bed setup, showing Snore and massage timer buttons" width="220">
+
+The remote used with the tested setup. The photo is cropped and its location metadata removed. See the [remote button coverage table](docs/REMOTE-CONTROLS.md) for supported functions and remaining differences. A matching remote does not establish controller compatibility.
 
 ## Compatibility
 
@@ -97,7 +103,7 @@ Example platform entry for `config.json` (replace both example IDs):
 
 These IDs are placeholders. Add this object to your existing `platforms` array; do not replace your full Homebridge configuration. For one base, keep just one side entry. Names must be nonempty and controller IDs unique.
 
-The plugin creates **12 switch accessories per side**, for 12 or 24 controls total. Move them to a dedicated room, such as **ErgoBed**, in Apple Home. Accessory identities are based on controller ID and command, so changing a side name keeps their identifiers. Apple Home can retain names you have customized there.
+The plugin creates **14 switch accessories per side**, for 14 or 28 controls total. Move them to a dedicated room, such as **ErgoBed**, in Apple Home. Accessory identities are based on controller ID and command, so changing a side name keeps their identifiers. Apple Home can retain names you have customized there.
 
 ## Controls
 
@@ -106,12 +112,14 @@ The plugin creates **12 switch accessories per side**, for 12 or 24 controls tot
 | Bed Light Toggle | Toggles the under-bed light. It cannot reliably set or report On/Off. |
 | Flat | Requests the controller’s Flat position. |
 | Zero G | Requests the controller’s Zero G position. |
+| Snore | Requests the controller’s Anti-Snore preset. |
 | Position 1 | Recalls saved preset 1. The plugin does not save or overwrite it. |
 | Position 2 | Recalls saved preset 2. The plugin does not save or overwrite it. |
 | Head Up / Head Down | Brief head movement, then RELEASE. |
 | Feet Up / Feet Down | Brief foot movement, then RELEASE. |
 | Lumbar Up / Lumbar Down | Brief lumbar movement, then RELEASE. |
 | Massage Toggle | Reads both motors; starts both if both are off, otherwise attempts to turn both off. |
+| Massage Timer Cycle | Advances the controller’s built-in massage timer, like the remote’s timer button. It does not select a known duration from HomeKit. |
 
 Manual adjustments use a **650 ms nudge** followed by RELEASE. This is not hold-to-move control. The plugin rejects overlapping commands to the same side; wait for the button to reset before pressing another. Different sides can operate independently.
 
@@ -121,7 +129,7 @@ Position and Flat/Zero G commands ask the base to run its own movement routine. 
 
 Because the controls are switches, Siri requests take the form **“Turn on My Side Flat.”** For a more natural phrase, create an Apple Home scene called **Bed Flat** that turns on the desired Flat switch(es), then say **“Set Bed Flat.”**
 
-Use explicit positions for predictable scenes. Light and massage are toggles: repeating a scene containing them can reverse the previous result. Turning a switch Off does not send a bed command. Avoid unattended or repeating movement automations.
+Use explicit positions for predictable scenes. Light and massage are toggles: repeating a scene containing them can reverse the previous result. Massage Timer Cycle also advances a selection, so it is best used as a button; HomeKit does not show the selected timer duration. Turning a switch Off does not send a bed command. Avoid unattended or repeating movement automations.
 
 ## Troubleshooting
 
@@ -157,7 +165,7 @@ npm pack --dry-run
 
 Tests use fake mDNS advertisements, loopback TCP controllers, and real Homebridge/HAP accessory classes with the hardware transport replaced. They do not discover or operate your bed. Tests cover framing, invalid responses, timeouts, movement release/recovery, massage progression, same-side concurrency, cached accessories, momentary resets, and configuration validation.
 
-Physical experience is limited to the single split bed described above, using the earlier local versions. Version 1.2.0’s transport changes are covered by automated tests; no additional physical movement tests were performed for this release.
+Physical experience is limited to the single split bed described above. Version 1.2.0’s transport changes were covered by automated tests. Version 1.3.0’s Snore and timer commands are awaiting supervised hardware confirmation; see the remote coverage table.
 
 ## Support the project
 

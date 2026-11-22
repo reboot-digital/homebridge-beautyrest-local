@@ -64,8 +64,8 @@ test('discovery timeout and error clean resources', async () => {
     assert.deepEqual(fake.calls, { stopped: 1, destroyed: 1 });
   }
 });
-test('all twelve controls retain known protocol codes and frame checksums', () => {
-  assert.equal(Object.keys(COMMANDS).length, 12);
+test('all fourteen controls retain known protocol codes and frame checksums', () => {
+  assert.equal(Object.keys(COMMANDS).length, 14);
   assert.equal(encode(COMMANDS.headUp.code).toString('hex'), 'aa03000a00040101000000f9f355');
   assert.equal(encode(COMMANDS.flat.code).readUInt32LE(7), 0x08000000);
   assert.equal(COMMANDS.preset1.name, 'Position 1');
@@ -131,4 +131,19 @@ test('massage stops on no progress and releases the per-side gate after failure'
   await assert.rejects(client.send(ID, 'massage'), /did not change/);
   assert.deepEqual(frames.map(f => f.code), [0, 0x800, 0]);
   await client.send(ID, 'flat');
+});
+
+test('Snore and timer cycle send exactly one native button command, with no movement retry', async t => {
+  for (const [command, expected] of [['snore', 0x8000], ['massageTimer', 0x200]]) {
+    const { client, frames } = await controller(t, socket => socket.write(status()));
+    await client.send(ID, command);
+    assert.deepEqual(frames.map(frame => frame.code), [expected]);
+  }
+});
+test('failed Snore and timer commands report failure without repeating the action', async t => {
+  for (const command of ['snore', 'massageTimer']) {
+    const { client, frames } = await controller(t, socket => socket.destroy());
+    await assert.rejects(client.send(ID, command));
+    assert.equal(frames.length, 1);
+  }
 });

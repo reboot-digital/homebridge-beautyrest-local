@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.3.0 — Unreleased candidate
+
+- Add a native Snore preset switch for each configured side.
+- Add Massage Timer Cycle, which sends the controller’s own timer-step command. No Homebridge countdown or unsupported fixed-duration claim.
+- Expose 14 momentary controls per side (28 for two sides), preserving existing accessory identifiers.
+- Add an owner-provided remote reference photo with EXIF/location metadata removed, plus a remote-function coverage table.
+- Add command-delivery, failure-without-retry, momentary reset and upgrade tests for the two new controls.
+
+The new commands require supervised physical confirmation before stable publication. Separate massage-zone/intensity controls and saving presets are not added by this version.
+
 ## 1.2.0 — 2026-11-22
 
 First public release, based on the working local 1.1.1 plugin.

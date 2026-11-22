@@ -14,6 +14,7 @@ const COMMANDS = Object.freeze({
   light: { name: 'Bed Light Toggle', code: 0x00020000 },
   flat: { name: 'Flat', code: 0x08000000 },
   zeroG: { name: 'Zero G', code: 0x00001000 },
+  snore: { name: 'Snore', code: 0x00008000 },
   preset1: { name: 'Position 1', code: 0x00002000 },
   preset2: { name: 'Position 2', code: 0x00004000 },
   headUp: { name: 'Head Up', code: 0x00000001, nudge: true },
@@ -23,6 +24,7 @@ const COMMANDS = Object.freeze({
   lumbarUp: { name: 'Lumbar Up', code: 0x00000040, nudge: true },
   lumbarDown: { name: 'Lumbar Down', code: 0x00000080, nudge: true },
   massage: { name: 'Massage Toggle' },
+  massageTimer: { name: 'Massage Timer Cycle', code: 0x00000200 },
 });
 
 function controllerId(service) {
