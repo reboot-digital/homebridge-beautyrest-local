@@ -1,0 +1,45 @@
+{
+  "pluginAlias": "BeautyrestLocal",
+  "pluginType": "platform",
+  "singular": true,
+  "headerDisplay": "Local controls for compatible Beautyrest adjustable bases. Every switch is momentary; Off is not the bed\u2019s actual state. Light and massage controls toggle. Tested on one split Beautyrest Black bed.",
+  "schema": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "title": "Plugin name",
+        "type": "string",
+        "default": "Beautyrest Local"
+      },
+      "sides": {
+        "title": "Bed sides",
+        "type": "array",
+        "minItems": 1,
+        "maxItems": 2,
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "title": "Side name",
+              "type": "string",
+              "minLength": 1
+            },
+            "id": {
+              "title": "Controller ID",
+              "type": "string",
+              "pattern": "^[0-9A-Fa-f]{12}$",
+              "description": "12 hexadecimal characters from the controller\u2019s mDNS bedinfo.device_id. No IP address or cloud login."
+            }
+          },
+          "required": [
+            "name",
+            "id"
+          ]
+        }
+      }
+    },
+    "required": [
+      "sides"
+    ]
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "name": "homebridge-beautyrest-local",
+  "version": "1.2.0",
+  "description": "Local Apple Home controls for compatible Beautyrest adjustable bases, through Homebridge.",
+  "keywords": [
+    "homebridge-plugin",
+    "supports-hap",
+    "beautyrest",
+    "adjustable-bed",
+    "keeson",
+    "ergomotion",
+    "homekit"
+  ],
+  "main": "index.js",
+  "files": [
+    "index.js",
+    "bed.js",
+    "config.schema.json",
+    "CHANGELOG.md",
+    "docs/images/*.png",
+    "scripts/discover.js",
+    "docs/COMPATIBILITY.md"
+  ],
+  "engines": {
+    "node": ">=20",
+    "homebridge": "^1.8.0 || ^2.0.0"
+  },
+  "dependencies": {
+    "bonjour-service": "1.4.4"
+  },
+  "displayName": "Beautyrest Local",
+  "author": "RebootDigital",
+  "license": "MIT",
+  "homepage": "https://github.com/reboot-digital/homebridge-beautyrest-local#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reboot-digital/homebridge-beautyrest-local.git"
+  },
+  "bugs": {
+    "url": "https://github.com/reboot-digital/homebridge-beautyrest-local/issues"
+  },
+  "scripts": {
+    "test": "node --test",
+    "check": "node --check index.js && node --check bed.js && node --check scripts/discover.js",
+    "prepublishOnly": "npm run check && npm test"
+  },
+  "devDependencies": {
+    "homebridge": "2.5.0"
+  },
+  "bin": {
+    "beautyrest-discover": "scripts/discover.js"
+  }
+}

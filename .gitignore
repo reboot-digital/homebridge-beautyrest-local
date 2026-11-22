@@ -1,0 +1,11 @@
+node_modules/
+*.tgz
+.DS_Store
+.env*
+.npmrc
+coverage/
+storage/
+config.json
+persist/
+accessories/
+*.log

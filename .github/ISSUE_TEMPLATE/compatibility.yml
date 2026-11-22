@@ -1,0 +1,72 @@
+name: Compatibility / new model
+description: Report a tested base or request investigation of another controller.
+title: '[Compatibility] Brand and base model'
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Requests are welcome, but implementation and testing cannot be guaranteed. Please read [the compatibility guide](https://github.com/reboot-digital/homebridge-beautyrest-local/blob/main/docs/COMPATIBILITY.md).
+        **Never post controller IDs, serial numbers, MAC/IP addresses, Wi-Fi details, full config files, HomeKit PINs/QR codes, tokens or packet captures.** Redact label photos. Do not run unknown motor commands.
+  - type: dropdown
+    id: report
+    attributes:
+      label: Request type
+      options:
+        - Request investigation / new model
+        - Report a working model
+        - Report a partially working model
+    validations:
+      required: true
+  - type: input
+    id: model
+    attributes:
+      label: Base brand, model and approximate year
+      description: Identify the base, not only the mattress. Do not include a unique serial number.
+    validations:
+      required: true
+  - type: input
+    id: controller
+    attributes:
+      label: Controller model / part number and firmware (if known)
+      description: Model number only. No device IDs, serial numbers, QR codes or network addresses.
+  - type: input
+    id: app
+    attributes:
+      label: Manufacturer app name and store link
+    validations:
+      required: true
+  - type: dropdown
+    id: discovery
+    attributes:
+      label: Does beautyrest-discover find a controller?
+      description: Answer only; do not paste the IDs or full output.
+      options:
+        - Not checked
+        - 'Yes'
+        - 'No'
+  - type: textarea
+    id: features
+    attributes:
+      label: Layout, requested features and per-control results
+      description: One base or independently controlled split? List which controls were actually tested and their outcomes; mark untested controls explicitly. Include how movement stopped.
+    validations:
+      required: true
+  - type: input
+    id: versions
+    attributes:
+      label: Plugin / Homebridge / Node versions
+  - type: dropdown
+    id: testing
+    attributes:
+      label: Can you help with supervised hardware testing if a prerelease is prepared?
+      options:
+        - 'Yes'
+        - 'No'
+        - Unsure
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Before submitting
+      options:
+        - label: I removed private identifiers and understand that a request does not guarantee support.
+          required: true

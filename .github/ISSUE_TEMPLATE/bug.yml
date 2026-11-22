@@ -1,0 +1,24 @@
+name: Bug report
+description: Report a problem with an existing supported control.
+body:
+  - type: markdown
+    attributes:
+      value: 'Remove controller IDs, serial numbers, MAC/IP addresses, Wi-Fi details, HomeKit codes, tokens and full configurations before posting. If a bed does not stop as expected, use the physical remote and stop testing.'
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened, and what did you expect?
+      description: Include the control, base model, app, and whether one or both sides are affected.
+    validations:
+      required: true
+  - type: input
+    id: versions
+    attributes:
+      label: Plugin / Homebridge / Node versions
+    validations:
+      required: true
+  - type: textarea
+    id: errors
+    attributes:
+      label: Redacted error and reproduction steps
+      description: No full config files, private IDs, QR codes or tokens.
