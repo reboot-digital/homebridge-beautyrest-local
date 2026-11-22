@@ -54,10 +54,12 @@ Restart Homebridge after adding configuration below. Do not install a second cop
 
 ### Homebridge plugin search / npm
 
+**First npm publication is processing.** For now, use the [GitHub release download](https://github.com/reboot-digital/homebridge-beautyrest-local/releases/tag/v1.2.0). The temporary npm version `0.0.0-stage` is a placeholder, not the plugin.
+
 Search Homebridge UI for `homebridge-beautyrest-local`, or install from npm:
 
 ```sh
-npm install -g homebridge-beautyrest-local
+npm install -g homebridge-beautyrest-local@1.2.0
 ```
 
 If npm reports “Not found,” use the GitHub release package above. Homebridge search depends on npm publication and indexing, so search results can lag the first release. A GitHub release alone does not establish that the package is indexed.
