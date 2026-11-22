@@ -53,17 +53,17 @@ The distribution package is named **`homebridge-beautyrest-local`** and the plat
 Download the `.tgz` package from [Releases](https://github.com/reboot-digital/homebridge-beautyrest-local/releases). On the Homebridge host, install the downloaded package with npm using your installation’s normal permissions:
 
 ```sh
-npm install -g ./homebridge-beautyrest-local-1.2.0.tgz
+npm install -g ./homebridge-beautyrest-local-1.3.0.tgz
 ```
 
 Restart Homebridge after adding configuration below. Do not install a second copy alongside an existing local copy.
 
 ### Homebridge plugin search / npm
 
-Version **1.2.0 is published on [npm](https://www.npmjs.com/package/homebridge-beautyrest-local)**. Search Homebridge UI for `homebridge-beautyrest-local`, or install from npm:
+The plugin is distributed on [npm](https://www.npmjs.com/package/homebridge-beautyrest-local). Search Homebridge UI for `homebridge-beautyrest-local`, or install from npm:
 
 ```sh
-npm install -g homebridge-beautyrest-local@1.2.0
+npm install -g homebridge-beautyrest-local@1.3.0
 ```
 
 If npm reports “Not found,” use the GitHub release package above. Homebridge search depends on npm publication and indexing, so search results can lag the first release. A GitHub release alone does not establish that the package is indexed.
@@ -165,7 +165,7 @@ npm pack --dry-run
 
 Tests use fake mDNS advertisements, loopback TCP controllers, and real Homebridge/HAP accessory classes with the hardware transport replaced. They do not discover or operate your bed. Tests cover framing, invalid responses, timeouts, movement release/recovery, massage progression, same-side concurrency, cached accessories, momentary resets, and configuration validation.
 
-Physical experience is limited to the single split bed described above. Version 1.2.0’s transport changes were covered by automated tests. Version 1.3.0’s Snore and timer commands are awaiting supervised hardware confirmation; see the remote coverage table.
+Physical experience is limited to the single split bed described above. Version 1.2.0’s transport changes were covered by automated tests. For version 1.3.0, the owner confirmed Snore’s expected position and stopping, plus normal native timer-button behavior, on My Side. Exact timer-duration selection/expiry and the new controls on the second side were not separately verified. See the remote coverage table.
 
 ## Support the project
 

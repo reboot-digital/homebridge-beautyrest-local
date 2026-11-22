@@ -140,7 +140,7 @@ function createClient({ BonjourClass = Bonjour, connect = createConnection, port
     const turnOn = !state.head && !state.foot;
     for (const zone of MASSAGE_ZONES) {
       const targetReached = () => turnOn ? state[zone.name] > 0 : state[zone.name] === 0;
-      for (let step = 0; step < 3 && !targetReached(); step++) {
+      for (let step = 0; step < 6 && !targetReached(); step++) {
         const previous = state[zone.name];
         await exchange(address, turnOn ? zone.up : zone.down);
         // A reply to a button press can contain the preceding state.

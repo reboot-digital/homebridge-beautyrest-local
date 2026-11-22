@@ -112,7 +112,7 @@ test('invalid ID and unknown commands do not start discovery', async () => {
   await assert.rejects(client.send(ID, '__proto__'), /Unknown/);
   assert.equal(touched, false);
 });
-test('massage toggles both motors on then drains both to zero', async t => {
+test('massage toggles both motors on then drains up to six intensity steps to zero', async t => {
   let head = 0, foot = 0;
   const { client } = await controller(t, (socket, code) => {
     const previous = status(head, foot);
@@ -123,7 +123,7 @@ test('massage toggles both motors on then drains both to zero', async t => {
     socket.write(previous); // Button replies may contain the preceding state.
   });
   await client.send(ID, 'massage'); assert.deepEqual([head, foot], [1, 1]);
-  head = 3; foot = 2;
+  head = 6; foot = 5;
   await client.send(ID, 'massage'); assert.deepEqual([head, foot], [0, 0]);
 });
 test('massage stops on no progress and releases the per-side gate after failure', async t => {

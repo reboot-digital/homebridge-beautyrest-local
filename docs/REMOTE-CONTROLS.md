@@ -15,8 +15,8 @@ The public image is a cropped, resized copy with EXIF and location metadata remo
 | Flat | Flat | Native preset request. |
 | ZERO G | Zero G | Native preset request. |
 | I / II short press | Position 1 / Position 2 | Recall only; exact saved positions belong to each base. |
-| SNORE | Snore, added in 1.3.0 | Native Anti-Snore command; awaiting supervised physical confirmation. |
-| Timer clock / 10, 20, 30 indicators | Massage Timer Cycle, added in 1.3.0 | One native timer-step command per press; awaiting supervised physical confirmation. No selected-duration display in HomeKit. |
+| SNORE | Snore, added in 1.3.0 | Owner confirmed the expected position and automatic stopping on My Side. |
+| Timer clock / 10, 20, 30 indicators | Massage Timer Cycle, added in 1.3.0 | Owner confirmed native button behavior on My Side. No selected-duration display in HomeKit. |
 | Separate head and foot massage buttons | Massage Toggle | Partial: plugin starts both motors if both are off, otherwise attempts to turn both off. Individual zones and intensity selection are not exposed. |
 | Hold I / II to save positions | No plugin equivalent | Use the physical remote. The plugin does not overwrite presets. |
 
@@ -24,7 +24,7 @@ The public image is a cropped, resized copy with EXIF and location metadata remo
 
 Massage Timer Cycle mirrors the remote button by asking the controller to advance its own timer selection. The controller handles the timing, independently of the Homebridge process. The plugin neither starts a Homebridge countdown nor assumes that one press always means 10 minutes.
 
-The remote has 10/20/30-minute indicators. The plugin has not validated a reliable timer-status field for this controller, so it does not offer fixed 10-, 20- and 30-minute selectors, report a remaining duration, or promise a particular starting/cycling/off sequence. Check the actual base/app/remote behavior during supervised testing. A successful status reply confirms receipt of a recognized protocol frame, not the selected duration or physical pose.
+The remote has 10/20/30-minute indicators. The plugin has not validated a reliable timer-status field for this controller, so it does not offer fixed 10-, 20- and 30-minute selectors, report a remaining duration, or promise a particular starting/cycling/off sequence. The manufacturer app did not update its displayed setting live during testing, so exact duration selection and expiry were not independently verified. A successful status reply confirms receipt of a recognized protocol frame, not the selected duration or physical pose.
 
 Use the timer control as a button rather than a repeated scene action. The plugin does not automatically turn massage on before cycling its timer, nor repeat a timer command after a network failure. An uncertain command may already have reached the controller.
 
@@ -34,4 +34,4 @@ The manufacturer-authored [Beautyrest Black Luxury quick setup guide, remote dia
 
 The native TCP command mapping was cross-checked against independent implementation evidence in [smartbed-mqtt's command constants](https://github.com/richardhopton/smartbed-mqtt/blob/2ea8b1d5d0dbbe58a806fca48aec7b2e5a8e69c9/src/Common/Commands.ts), [ErgoMotion preset mapping](https://github.com/richardhopton/smartbed-mqtt/blob/2ea8b1d5d0dbbe58a806fca48aec7b2e5a8e69c9/src/ErgoMotion/setupPresetButtons.ts), and [massage control mapping](https://github.com/richardhopton/smartbed-mqtt/blob/2ea8b1d5d0dbbe58a806fca48aec7b2e5a8e69c9/src/ErgoMotion/setupMassageButtons.ts). This is protocol evidence, not physical compatibility confirmation for every controller.
 
-Automated tests confirm the exact commands, one-shot behavior, errors without replay, momentary resets, same-side exclusion, and preservation of existing accessories during upgrade. **New Snore and timer controls have not yet been physically tested on the owner's bed.**
+Automated tests confirm the exact commands, one-shot behavior, errors without replay, momentary resets, same-side exclusion, and preservation of existing accessories during upgrade. During supervised testing, the owner confirmed that Snore on My Side recalled the expected position and stopped on its own. The native timer command was sent twice on My Side; the owner observed massage starting and confirmed the timer button appeared to behave normally. The app did not update live. Exact 10/20/30-minute selections, full timed expiry and these new commands on the second side remain unverified. Massage-off behavior for status levels up to six is covered by fake-controller tests; the highest physical massage intensities were not newly tested.
