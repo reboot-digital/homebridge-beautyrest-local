@@ -52,11 +52,13 @@ Restart Homebridge after adding configuration below. Do not install a second cop
 
 ### Homebridge plugin search / npm
 
-npm publication is pending. The package will only become searchable through Homebridge after publication to npm and search indexing. A GitHub release alone does not establish that it is indexed. Once npm publication is announced here, install through Homebridge UI by searching for `homebridge-beautyrest-local`, or run:
+Search Homebridge UI for `homebridge-beautyrest-local`, or install from npm:
 
 ```sh
 npm install -g homebridge-beautyrest-local
 ```
+
+If npm reports “Not found,” use the GitHub release package above. Homebridge search depends on npm publication and indexing, so search results can lag the first release. A GitHub release alone does not establish that the package is indexed.
 
 This project does not currently claim Homebridge Verified status.
 
