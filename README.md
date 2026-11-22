@@ -1,12 +1,14 @@
 # Beautyrest Local for Homebridge
 
+[![Tests](https://github.com/reboot-digital/homebridge-beautyrest-local/actions/workflows/test.yml/badge.svg)](https://github.com/reboot-digital/homebridge-beautyrest-local/actions/workflows/test.yml)
+
 **Your adjustable bed, in Apple Home. Local control. No relay subscription.**
 
 Control one base or two independently paired sides of a compatible Beautyrest adjustable bed from Apple Home, Siri, and HomeKit scenes. Beautyrest Local sends commands directly to the bed’s Wi-Fi controllers on your home network. It does not need Alexa, a cloud account, or a subscription.
 
 Built and maintained by **RebootDigital**. This is an independent community project, not an official Beautyrest, Keeson, Ergomotion, Apple, or Homebridge product.
 
-[Installation](#installation) · [Compatibility](#compatibility) · [Controls](#controls) · [Troubleshooting](#troubleshooting) · [Report an issue](https://github.com/reboot-digital/homebridge-beautyrest-local/issues)
+[☕ Buy me a coffee](https://buymeacoffee.com/rebootdigital) · [Installation](#installation) · [Compatibility](#compatibility) · [Controls](#controls) · [Troubleshooting](#troubleshooting) · [Report an issue](https://github.com/reboot-digital/homebridge-beautyrest-local/issues)
 
 ## In Apple Home
 
@@ -159,7 +161,7 @@ Physical experience is limited to the single split bed described above, using th
 
 ## Support the project
 
-Beautyrest Local is free to use. A Buy Me a Coffee link will be added when RebootDigital’s donation page is available. Donations are optional and do not unlock features.
+If Beautyrest Local makes your setup easier, you can [buy RebootDigital a coffee](https://buymeacoffee.com/rebootdigital) to support future development. Donations are optional; the plugin is free and all features remain available to everyone.
 
 ## License
 

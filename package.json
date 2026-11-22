@@ -49,5 +49,9 @@
   },
   "bin": {
     "beautyrest-discover": "scripts/discover.js"
+  },
+  "funding": {
+    "type": "buymeacoffee",
+    "url": "https://buymeacoffee.com/rebootdigital"
   }
 }
