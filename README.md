@@ -83,6 +83,8 @@ For the original private 1.1.1 development package, install the npm release in p
 
 ## Find your controller IDs
 
+**Next release (not yet published):** click **Discover beds** above the settings form. After the 10-second scan, choose **Use for Side 1** or **Use for Side 2** to fill an empty side. Rename the side below, then Save and restart Homebridge. Already configured controllers are marked, and discovery will not replace an existing controller. It sends no bed commands. If no controller appears, use the manual steps below and check Wi-Fi/multicast connectivity.
+
 The plugin discovers each base by its controller ID, so you do not need a fixed IP address. Each ID has **12 hexadecimal characters**. Discovered addresses are kept in memory for up to 60 seconds and discarded after communication failures; you still do not need fixed IP addresses. After installing the plugin, open **Homebridge UI → Terminal** on the Homebridge host (not a terminal on an unrelated computer) and run:
 
 ```sh

@@ -21,13 +21,16 @@
     "scripts/discover.js",
     "docs/COMPATIBILITY.md",
     "docs/images/*.jpg",
-    "docs/REMOTE-CONTROLS.md"
+    "docs/REMOTE-CONTROLS.md",
+    "homebridge-ui/",
+    "scripts/discovery.js"
   ],
   "engines": {
     "node": "^22.12.0 || ^24.0.0 || ^26.0.0",
     "homebridge": "^1.8.0 || ^2.0.0"
   },
   "dependencies": {
+    "@homebridge/plugin-ui-utils": "2.3.0",
     "bonjour-service": "1.4.4"
   },
   "displayName": "Beautyrest Local",
@@ -43,11 +46,12 @@
   },
   "scripts": {
     "test": "node --test",
-    "check": "node --check index.js && node --check bed.js && node --check scripts/discover.js",
+    "check": "node --check index.js && node --check bed.js && node --check scripts/discover.js && node --check scripts/discovery.js && node --check homebridge-ui/server.js && node --check homebridge-ui/public/ui.js",
     "prepublishOnly": "npm run check && npm test"
   },
   "devDependencies": {
-    "homebridge": "2.5.0"
+    "homebridge": "2.5.0",
+    "jsdom": "26.1.0"
   },
   "bin": {
     "beautyrest-discover": "scripts/discover.js"

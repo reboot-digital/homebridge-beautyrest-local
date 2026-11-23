@@ -1,0 +1,11 @@
+<div class="card mb-3">
+  <div class="card-body">
+    <h3 class="h5">Find your bed controllers</h3>
+    <p>The bed must already be connected to Wi-Fi. Discovery listens on Homebridge’s local network for 10 seconds without moving the bed.</p>
+    <button id="discover" type="button" class="btn btn-primary" disabled>Discover beds</button>
+    <p id="discovery-status" class="mt-2" role="status" aria-live="polite"></p>
+    <div id="discovery-results"></div>
+    <small>Discovery order does not identify left/right. Match each ID to its base before using controls. IDs are private; do not include them in public screenshots. Changes are applied only after Save and restart.</small>
+  </div>
+</div>
+<script src="ui.js"></script>
