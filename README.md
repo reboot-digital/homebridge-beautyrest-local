@@ -13,11 +13,11 @@ Built and maintained by **RebootDigital**. This is an independent community proj
 
 ## Quick start
 
-**For compatible Wi-Fi bases; check [compatibility](#compatibility) first.** The Discover beds button and custom preset names below are prepared for the next release and are not yet published in 1.4.0.
+**For compatible Wi-Fi bases; check [compatibility](#compatibility) first.** These steps apply to version 1.5.0 or later.
 
 1. **Connect the bed to Wi-Fi** using its normal manufacturer app.
 2. **Install the plugin:** in Homebridge UI → Plugins, search for `homebridge-beautyrest-local`, install **Beautyrest Local** by RebootDigital, and open its settings.
-3. **Find your bases:** click **Discover beds**, then **Use for Side 1** and, if needed, **Use for Side 2**. Match each controller to its physical side; discovery order does not tell you which is which. For the current 1.4.0 release, use the [controller-ID instructions](#find-your-controller-ids) instead.
+3. **Find your bases:** click **Discover beds**, then **Use for Side 1** and, if needed, **Use for Side 2**. Match each controller to its physical side; discovery order does not tell you which is which. If discovery finds nothing, use the [controller-ID instructions](#find-your-controller-ids).
 4. **Name and save:** use short names such as **My Side / Other Side** or **His Side / Her Side**. Leave all controls enabled to start, then **Save and restart Homebridge**.
 5. **Open Apple Home:** if Homebridge is already paired, the controls appear without pairing again. For a new Homebridge setup or newly created child bridge, follow Homebridge UI’s pairing instructions once. Put the controls in a bed room, then follow [Testing safely](#testing-safely) before trying a button.
 
@@ -88,7 +88,7 @@ If a broad search finds no results, use the full package name above.
 On the Homebridge host, use your installation’s normal permissions:
 
 ```sh
-npm install -g homebridge-beautyrest-local@1.4.0
+npm install -g homebridge-beautyrest-local@1.5.0
 ```
 
 ### Manual download
@@ -96,7 +96,7 @@ npm install -g homebridge-beautyrest-local@1.4.0
 Download the `.tgz` package from [Releases](https://github.com/reboot-digital/homebridge-beautyrest-local/releases), then install it on the Homebridge host:
 
 ```sh
-npm install -g ./homebridge-beautyrest-local-1.4.0.tgz
+npm install -g ./homebridge-beautyrest-local-1.5.0.tgz
 ```
 
 Configure and restart Homebridge. Install only one copy of the plugin.
@@ -109,7 +109,7 @@ For the original private 1.1.1 development package, install the npm release in p
 
 ## Find your controller IDs
 
-**Next release (not yet published):** click **Discover beds** above the settings form. After the 10-second scan, choose **Use for Side 1** or **Use for Side 2** to fill an empty side. Rename the side below, then Save and restart Homebridge. Already configured controllers are marked, and discovery will not replace an existing controller. It sends no bed commands. If no controller appears, use the manual steps below and check Wi-Fi/multicast connectivity.
+In version 1.5.0 or later, click **Discover beds** above the settings form. After the 10-second scan, choose **Use for Side 1** or **Use for Side 2** to fill an empty side. Rename the side below, then Save and restart Homebridge. Already configured controllers are marked, and discovery will not replace an existing controller. It sends no bed commands. If no controller appears, use the manual steps below and check Wi-Fi/multicast connectivity.
 
 The plugin discovers each base by its controller ID, so you do not need a fixed IP address. Each ID has **12 hexadecimal characters**. Discovered addresses are kept in memory for up to 60 seconds and discarded after communication failures; you still do not need fixed IP addresses. After installing the plugin, open **Homebridge UI → Terminal** on the Homebridge host (not a terminal on an unrelated computer) and run:
 
@@ -148,7 +148,7 @@ These IDs are placeholders. Add this object to your existing `platforms` array; 
 
 With all controls enabled, the plugin creates **14 switch accessories per side**, for 14 or 28 controls total. Move them to a dedicated room, such as **ErgoBed**, in Apple Home. Accessory identities are based on controller ID and command, so changing a side name keeps their identifiers. Apple Home can retain names you have customized there.
 
-### Custom preset labels (next release; not yet published)
+### Custom preset labels
 
 Each side has optional **Position 1 name** and **Position 2 name** fields. Leave them blank for the existing names, or enter names such as **Reading** and **Lounge** to match the positions saved in that base. The side name is included automatically: **My Side Reading**.
 
@@ -168,7 +168,7 @@ For the **pictured Beautyrest Black Luxury remote with I and II buttons**, the m
 2. Use the remote’s head and foot arrows to reach the position you want to store.
 3. Hold **I for 7 seconds**, then release, to save **Position 1**. Use **II for 7 seconds** to save **Position 2** instead. **Saving replaces that button’s previous position.**
 4. With the area clear, move to another position, then briefly press the same I or II button to check recall with the remote first.
-5. In Apple Home, turn on that side’s **Position 1** or **Position 2** switch once to check it recalls the same position. In the next release, these may have your custom names, such as **My Side Reading**.
+5. In Apple Home, turn on that side’s **Position 1** or **Position 2** switch once to check it recalls the same position. If you set custom labels, these may have names such as **My Side Reading**.
 
 For independently controlled split bases, repeat separately with each base’s own remote and check each side. The plugin recalls **I → Position 1** and **II → Position 2**; renaming a button does not change its stored position. No HomeKit re-pairing is needed when changing a saved position. Do not use a factory-reset procedure to save presets.
 

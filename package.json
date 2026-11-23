@@ -1,6 +1,6 @@
 {
   "name": "homebridge-beautyrest-local",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Local Apple Home controls for compatible Beautyrest adjustable bases, through Homebridge.",
   "keywords": [
     "homebridge-plugin",

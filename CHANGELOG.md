@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.5.0 — 2026-11-23
 
 - Add a short quick-start guide, supervised-testing precautions and a visible warranty/liability notice linked to the MIT license.
 - Document saving I/II presets on the pictured remote using the manufacturer’s instructions, and explain their Position 1/2 mapping and custom labels in Apple Home.
