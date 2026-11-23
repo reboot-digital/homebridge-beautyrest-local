@@ -2,7 +2,7 @@
   "pluginAlias": "BeautyrestLocal",
   "pluginType": "platform",
   "singular": true,
-  "headerDisplay": "14 local momentary controls per side for compatible Beautyrest bases, including Snore and Massage Timer Cycle. Off is not the physical state. The timer cycles the controller selection; HomeKit does not report its duration.",
+  "headerDisplay": "Choose up to 14 momentary controls per side. All are enabled by default. To keep controls but hide their main-screen tiles or summaries, adjust Home View and Home Summaries in Apple Home. Off is not the physical bed state.",
   "schema": {
     "type": "object",
     "properties": {
@@ -22,13 +22,92 @@
             "name": {
               "title": "Side name",
               "type": "string",
-              "minLength": 1
+              "minLength": 1,
+              "description": "Short, distinct names work well: My Side / Other Side, His Side / Her Side, Left Side / Right Side, or Alex\u2019s Side / Sam\u2019s Side. This prefixes each control, such as My Side Flat. Match the controller ID to the correct physical side first."
             },
             "id": {
               "title": "Controller ID",
               "type": "string",
               "pattern": "^[0-9A-Fa-f]{12}$",
               "description": "12 hexadecimal characters from the controller\u2019s mDNS bedinfo.device_id. No IP address or cloud login."
+            },
+            "controls": {
+              "title": "Controls in Apple Home",
+              "type": "object",
+              "description": "All controls are enabled by default. Turning one off removes its accessory from Apple Home and Siri after restart; affected scenes and automations may need repair if you enable it again. To keep a control but hide its main-screen tile, use Add to Home View in Apple Home instead.",
+              "additionalProperties": false,
+              "properties": {
+                "light": {
+                  "title": "Bed Light Toggle",
+                  "type": "boolean",
+                  "default": true
+                },
+                "flat": {
+                  "title": "Flat",
+                  "type": "boolean",
+                  "default": true
+                },
+                "zeroG": {
+                  "title": "Zero G",
+                  "type": "boolean",
+                  "default": true
+                },
+                "snore": {
+                  "title": "Snore",
+                  "type": "boolean",
+                  "default": true
+                },
+                "preset1": {
+                  "title": "Position 1",
+                  "type": "boolean",
+                  "default": true
+                },
+                "preset2": {
+                  "title": "Position 2",
+                  "type": "boolean",
+                  "default": true
+                },
+                "headUp": {
+                  "title": "Head Up",
+                  "type": "boolean",
+                  "default": true
+                },
+                "headDown": {
+                  "title": "Head Down",
+                  "type": "boolean",
+                  "default": true
+                },
+                "feetUp": {
+                  "title": "Feet Up",
+                  "type": "boolean",
+                  "default": true
+                },
+                "feetDown": {
+                  "title": "Feet Down",
+                  "type": "boolean",
+                  "default": true
+                },
+                "lumbarUp": {
+                  "title": "Lumbar Up",
+                  "type": "boolean",
+                  "default": true
+                },
+                "lumbarDown": {
+                  "title": "Lumbar Down",
+                  "type": "boolean",
+                  "default": true
+                },
+                "massage": {
+                  "title": "Massage Toggle",
+                  "type": "boolean",
+                  "default": true
+                },
+                "massageTimer": {
+                  "title": "Massage Timer Cycle",
+                  "type": "boolean",
+                  "default": true
+                }
+              }
             }
           },
           "required": [

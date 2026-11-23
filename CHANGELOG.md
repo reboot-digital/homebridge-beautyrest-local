@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.4.0 — 2026-11-23
+
+- Add per-side control selection in Homebridge UI and JSON configuration. All 14 controls remain enabled by default; only explicit `false` selections remove accessories.
+- Preserve existing accessory identifiers for enabled controls and use the same identifiers when re-enabling a control.
+- Reject malformed or unknown selections without removing cached accessories.
+- Explain the effect of disabling controls on scenes, Siri and automations, and add Apple Home View/Home Summaries setup guidance.
+- Keep physical commands, saved presets, movement release and discovery behavior unchanged.
+
 ## 1.3.1 — 2026-11-23
 
 - Cache discovered controller addresses in memory for up to 60 seconds to reduce repeated discovery; invalidate after communication failures without replaying commands.

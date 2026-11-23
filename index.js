@@ -25,8 +25,11 @@ class BeautyrestLocal {
     const sides = Array.isArray(config.sides) ? config.sides : [];
     const ids = sides.map(side => String(side?.id ?? '').toLowerCase());
     if (sides.length < 1 || sides.length > 2 || new Set(ids).size !== sides.length ||
-        sides.some((side, index) => !side?.name?.trim?.() || !/^[0-9a-f]{12}$/.test(ids[index]))) {
-      log.error('Configure one or two unique Beautyrest controller IDs and side names. Existing accessories are retained but unavailable until configuration is corrected.');
+        sides.some((side, index) => !side?.name?.trim?.() || !/^[0-9a-f]{12}$/.test(ids[index]) ||
+          (side.controls !== undefined && (side.controls === null || typeof side.controls !== 'object' ||
+            Array.isArray(side.controls) || Object.entries(side.controls).some(([command, enabled]) =>
+              !Object.hasOwn(COMMANDS, command) || typeof enabled !== 'boolean'))))) {
+      log.error('Check side names, unique 12-character controller IDs and control selections (true/false). Existing accessories are retained but unavailable until configuration is corrected.');
       return;
     }
 
@@ -34,6 +37,7 @@ class BeautyrestLocal {
     for (const [index, side] of sides.entries()) {
       const id = ids[index];
       for (const [command, description] of Object.entries(COMMANDS)) {
+        if (side.controls?.[command] === false) continue;
         const name = side.name.trim() + ' ' + description.name;
         const key = uuid.generate(PLUGIN + ':' + id + ':' + command);
         desired.add(key);

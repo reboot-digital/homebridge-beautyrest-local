@@ -62,7 +62,7 @@ If a broad search finds no results, use the full package name above.
 On the Homebridge host, use your installation’s normal permissions:
 
 ```sh
-npm install -g homebridge-beautyrest-local@1.3.1
+npm install -g homebridge-beautyrest-local@1.4.0
 ```
 
 ### Manual download
@@ -70,7 +70,7 @@ npm install -g homebridge-beautyrest-local@1.3.1
 Download the `.tgz` package from [Releases](https://github.com/reboot-digital/homebridge-beautyrest-local/releases), then install it on the Homebridge host:
 
 ```sh
-npm install -g ./homebridge-beautyrest-local-1.3.1.tgz
+npm install -g ./homebridge-beautyrest-local-1.4.0.tgz
 ```
 
 Configure and restart Homebridge. Install only one copy of the plugin.
@@ -97,7 +97,9 @@ With two bases, the order in discovery does not identify the physical side. Matc
 
 ## Configuration
 
-In Homebridge UI, open **Beautyrest Local → Settings** and add one or two sides. Use short names such as **My Side** and **Other Side**, or **Left Bed** and **Right Bed**. Save and restart Homebridge. For an isolated setup, use the UI’s child bridge option and pair that bridge in Apple Home.
+In Homebridge UI, open **Beautyrest Local → Settings** and add one or two sides. Use short, distinct names such as **My Side / Other Side**, **His Side / Her Side**, **Left Side / Right Side**, or **Alex’s Side / Sam’s Side**. Save and restart Homebridge. For an isolated setup, use the UI’s child bridge option and pair that bridge in Apple Home.
+
+Names become part of each control label, for example **My Side Flat** or **Her Side Head Up**. Choose phrases that are easy to recognize and say to Siri. For Left/Right labels, use a consistent viewpoint, such as lying in bed. Names do not identify the physical controller: match each ID to the correct base first.
 
 Example platform entry for `config.json` (replace both example IDs):
 
@@ -114,7 +116,32 @@ Example platform entry for `config.json` (replace both example IDs):
 
 These IDs are placeholders. Add this object to your existing `platforms` array; do not replace your full Homebridge configuration. For one base, keep just one side entry. Names must be nonempty and controller IDs unique.
 
-The plugin creates **14 switch accessories per side**, for 14 or 28 controls total. Move them to a dedicated room, such as **ErgoBed**, in Apple Home. Accessory identities are based on controller ID and command, so changing a side name keeps their identifiers. Apple Home can retain names you have customized there.
+With all controls enabled, the plugin creates **14 switch accessories per side**, for 14 or 28 controls total. Move them to a dedicated room, such as **ErgoBed**, in Apple Home. Accessory identities are based on controller ID and command, so changing a side name keeps their identifiers. Apple Home can retain names you have customized there.
+
+### Choose which controls appear
+
+In Homebridge UI, open a side’s **Controls in Apple Home** settings and turn off any controls you do not want. Save and restart Homebridge. Each side can have a different selection. **All controls stay enabled by default**, including when updating an existing setup.
+
+For JSON configuration, add a `controls` object to the relevant side. Only explicitly `false` controls are disabled; omitted controls stay enabled:
+
+```json
+{ "name": "My Side", "id": "aabbccddeeff", "controls": { "massage": false, "massageTimer": false } }
+```
+
+Control keys: `light`, `flat`, `zeroG`, `snore`, `preset1`, `preset2`, `headUp`, `headDown`, `feetUp`, `feetDown`, `lumbarUp`, `lumbarDown`, `massage`, `massageTimer`.
+
+Disabling a control removes its accessory from Apple Home and Siri. If a scene or automation uses it, update that scene first. Re-enabling uses the same accessory identifier, but Apple Home may require you to restore its room, name or automation links. Controls that remain enabled keep their existing identities. This setting does not change the bed’s saved presets or physical remote.
+
+### Keep Apple Home uncluttered
+
+To keep controls available in their room, Siri and scenes while reducing clutter:
+
+1. Put the bed controls in a dedicated room, such as **ErgoBed**.
+2. Open each accessory’s settings and turn **Add to Home View** off for tiles you do not need on the main screen.
+3. Open **Status** or **Status and Notifications**, where available, and turn **Include in Home Summaries** off. These are momentary controls, so their Off value is not a useful bed-status summary. See [Apple’s instructions](https://support.apple.com/en-us/105042).
+4. Keep just your preferred controls or a few scenes, such as **Bed Flat**, in Home View.
+
+These display preferences are set in Apple Home; the plugin cannot choose their defaults. Hiding tiles or summaries does not disable Siri, scenes or automations. Review any movement automations separately.
 
 ## Controls
 

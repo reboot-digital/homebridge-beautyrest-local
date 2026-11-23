@@ -130,3 +130,53 @@ test('new switches forward the command once and reset to Off', async () => {
   }
   assert.equal(calls.length, 2);
 });
+
+test('per-side selections remove only explicitly disabled controls and preserve retained identities', async () => {
+  const old = await setup(); old.api.emit('didFinishLaunching');
+  const next = await setup({ sides: [{ ...sides[0], controls: { massage: false, massageTimer: false, flat: true } }, sides[1]] });
+  for (const accessory of old.registered) next.platform.configureAccessory(accessory);
+  next.api.emit('didFinishLaunching');
+  assert.equal(next.registered.length, 0);
+  assert.deepEqual(next.removed.map(a => a.displayName).sort(), ['Side A Massage Timer Cycle', 'Side A Massage Toggle']);
+  assert.equal(next.platform.cached.size, 28);
+  assert.equal(next.updated.length, 0);
+  const restore = await setup();
+  for (const accessory of old.registered.filter(a => !next.removed.includes(a))) restore.platform.configureAccessory(accessory);
+  restore.api.emit('didFinishLaunching');
+  assert.equal(restore.removed.length, 0);
+  assert.equal(restore.registered.length, 2);
+  assert.deepEqual(restore.registered.map(a => a.UUID).sort(), next.removed.map(a => a.UUID).sort());
+});
+
+test('omitted and empty selections enable all controls; all false exposes none without hardware traffic', async () => {
+  const full = await setup({ sides: [{ ...sides[0], controls: {} }] }); full.api.emit('didFinishLaunching');
+  assert.equal(full.registered.length, 14);
+  let calls = 0;
+  const disabled = Object.fromEntries(Object.keys(COMMANDS).map(key => [key, false]));
+  const none = await setup({ sides: [{ ...sides[0], controls: disabled }] }, async () => calls++);
+  for (const accessory of full.registered) none.platform.configureAccessory(accessory);
+  none.api.emit('didFinishLaunching');
+  assert.equal(none.registered.length, 0); assert.equal(none.removed.length, 14); assert.equal(calls, 0);
+});
+
+test('invalid selections preserve all cached controls instead of silently removing them', async () => {
+  const old = await setup(); old.api.emit('didFinishLaunching');
+  for (const controls of [null, false, [], 'flat', { flat: 'false' }, { flat: null }, { Flat: false }, { unknown: false }]) {
+    let calls = 0;
+    const f = await setup({ sides: [{ ...sides[0], controls }, sides[1]] }, async () => calls++);
+    for (const accessory of old.registered) f.platform.configureAccessory(accessory);
+    f.api.emit('didFinishLaunching');
+    assert.equal(f.registered.length, 0); assert.equal(f.removed.length, 0); assert.equal(f.updated.length, 0); assert.equal(calls, 0);
+    assert.ok(f.messages.some(m => m.level === 'error'));
+  }
+});
+
+test('settings GUI offers all known controls, enabled by default and optional', () => {
+  const schema = JSON.parse(fs.readFileSync(path.join(__dirname, '../config.schema.json')));
+  const side = schema.schema.properties.sides.items;
+  assert.ok(!side.required.includes('controls'));
+  assert.deepEqual(Object.keys(side.properties.controls.properties).sort(), Object.keys(COMMANDS).sort());
+  for (const property of Object.values(side.properties.controls.properties)) {
+    assert.equal(property.type, 'boolean'); assert.equal(property.default, true);
+  }
+});
