@@ -11,7 +11,7 @@ npm test
 npm pack --dry-run
 ```
 
-The automated suite uses fake discovery and loopback TCP controllers. It must never discover or move a real bed. CI also runs against Node 22, 24 and 26 with Homebridge 2, plus Node 20 with Homebridge 1.8.
+The automated suite uses fake discovery and loopback TCP controllers. It must never discover or move a real bed. CI also runs against Node 22, 24 and 26 with Homebridge 2, plus Node 22 with Homebridge 1.8.
 
 ## Changes to controls
 

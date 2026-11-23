@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.3.1 — 2026-11-23
+
+- Cache discovered controller addresses in memory for up to 60 seconds to reduce repeated discovery; invalidate after communication failures without replaying commands.
+- Use Homebridge’s supported accessory-name update API when available, retaining compatibility with Homebridge 1.x.
+- Clarify that invalid configuration preserves existing accessories until settings are corrected; valid configuration still removes obsolete controls.
+- Limit declared Node support to 22.12+ (22.x), 24.x and 26.x; remove end-of-life Node 20 from CI.
+- Add the Homebridge verification badge, lead with UI installation, and document upgrades that preserve pairing.
+- Preserve all 28 accessory identities, protocol commands, 650 ms manual movement and RELEASE recovery.
+
 ## 1.3.0 — 2026-11-22
 
 - Add a native Snore preset switch for each configured side.

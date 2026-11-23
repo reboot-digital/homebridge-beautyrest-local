@@ -26,7 +26,7 @@ class BeautyrestLocal {
     const ids = sides.map(side => String(side?.id ?? '').toLowerCase());
     if (sides.length < 1 || sides.length > 2 || new Set(ids).size !== sides.length ||
         sides.some((side, index) => !side?.name?.trim?.() || !/^[0-9a-f]{12}$/.test(ids[index]))) {
-      log.error('Configure one or two unique Beautyrest controller IDs and side names.');
+      log.error('Configure one or two unique Beautyrest controller IDs and side names. Existing accessories are retained but unavailable until configuration is corrected.');
       return;
     }
 
@@ -47,8 +47,8 @@ class BeautyrestLocal {
 
         const service = accessory.getService(Service.Switch) ?? accessory.addService(Service.Switch, name);
         if (cached && accessory.displayName !== name) {
-          accessory.displayName = name;
-          service.displayName = name;
+          if (typeof accessory.updateDisplayName === 'function') accessory.updateDisplayName(name);
+          else accessory.displayName = name; // Homebridge 1.x has no updateDisplayName API.
           service.setCharacteristic(Characteristic.Name, name);
           api.updatePlatformAccessories([accessory]);
         }

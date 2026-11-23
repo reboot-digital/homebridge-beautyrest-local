@@ -47,10 +47,16 @@ function encode(code) {
 
 // Dependencies and short deadlines can be injected by tests; normal operation uses LAN discovery.
 function createClient({ BonjourClass = Bonjour, connect = createConnection, port = PORT,
-  discoveryMs = 2600, responseMs = 1600, nudgeMs = NUDGE_MS, massageDelayMs = 400 } = {}) {
+  discoveryMs = 2600, responseMs = 1600, nudgeMs = NUDGE_MS, massageDelayMs = 400,
+  addressTtlMs = 60000, now = () => performance.now() } = {}) {
   const active = new Set();
+  const addresses = new Map();
 
   function discover(id) {
+    id = id.toLowerCase();
+    const cached = addresses.get(id);
+    if (cached && cached.expires > now()) return Promise.resolve(cached.address);
+    addresses.delete(id);
     return new Promise((resolve, reject) => {
       let bonjour;
       let browser;
@@ -64,7 +70,10 @@ function createClient({ BonjourClass = Bonjour, connect = createConnection, port
         browser?.stop();
         bonjour?.destroy();
         if (error) reject(error);
-        else resolve(address);
+        else {
+          addresses.set(id, { address, expires: now() + addressTtlMs });
+          resolve(address);
+        }
       }
 
       try {
@@ -174,6 +183,10 @@ function createClient({ BonjourClass = Bonjour, connect = createConnection, port
         }
         throw error;
       }
+    } catch (error) {
+      // Invalidate for the NEXT user request. Never replay an uncertain command.
+      addresses.delete(id);
+      throw error;
     } finally {
       active.delete(id);
     }

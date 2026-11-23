@@ -18,7 +18,13 @@ async function setup(config = { sides }, send = async () => {}) {
   api.registerPlatform = (plugin, alias, implementation) => {
     assert.equal(plugin, 'homebridge-beautyrest-local'); assert.equal(alias, 'BeautyrestLocal'); Platform = implementation;
   };
-  api.registerPlatformAccessories = (plugin, alias, accessories) => registered.push(...accessories);
+  api.registerPlatformAccessories = (plugin, alias, accessories) => {
+    for (const accessory of accessories) {
+      accessory._associatedPlugin = plugin;
+      accessory._associatedPlatform = alias;
+    }
+    registered.push(...accessories);
+  };
   api.unregisterPlatformAccessories = (plugin, alias, accessories) => removed.push(...accessories);
   api.updatePlatformAccessories = accessories => updated.push(...accessories);
   const sandbox = { module: { exports: {} }, require: () => ({ COMMANDS, send }), setTimeout };
@@ -65,6 +71,13 @@ test('cached accessories keep UUIDs across rename and stale controls are removed
   next.api.emit('didFinishLaunching');
   assert.equal(next.registered.length, 0); assert.equal(next.removed.length, 14); assert.equal(next.updated.length, 14);
   assert.ok(next.updated.every(a => a.displayName.startsWith('Renamed ')));
+  for (const accessory of next.updated) {
+    assert.ok(old.registered.includes(accessory));
+    const serialized = accessory.constructor.serialize(accessory);
+    assert.equal(serialized.UUID, accessory.UUID);
+    if (typeof accessory.updateDisplayName === 'function') assert.equal(serialized.displayName, accessory.displayName);
+    assert.equal(accessory.getService(next.api.hap.Service.Switch).getCharacteristic(next.api.hap.Characteristic.Name).value, accessory.displayName);
+  }
 });
 test('momentary writes reset; false writes are no-ops; same side is busy while another side works', async () => {
   let release;

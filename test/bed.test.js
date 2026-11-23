@@ -64,6 +64,39 @@ test('discovery timeout and error clean resources', async () => {
     assert.deepEqual(fake.calls, { stopped: 1, destroyed: 1 });
   }
 });
+test('address cache is per controller, case insensitive and expires without extending on hits', async () => {
+  let clock = 0;
+  const records = [service(), service('112233445566')];
+  const fake = discovery(records);
+  const client = createClient({ ...fake, now: () => clock, addressTtlMs: 100 });
+  assert.equal(await client.discover(ID), '127.0.0.1');
+  clock = 90;
+  records[0].addresses = ['127.0.0.2'];
+  assert.equal(await client.discover(ID.toUpperCase()), '127.0.0.1');
+  assert.equal(fake.calls.stopped, 1);
+  await client.discover('112233445566');
+  assert.equal(fake.calls.stopped, 2);
+  clock = 100;
+  assert.equal(await client.discover(ID), '127.0.0.2');
+  assert.equal(fake.calls.stopped, 3);
+});
+test('successful commands reuse discovery; failure invalidates for the next request without replay', async t => {
+  let fail = false;
+  const { port, frames } = await controller(t, socket => fail ? socket.destroy() : socket.write(status()));
+  const fake = discovery();
+  const client = createClient({ ...fake, port, responseMs: 80 });
+  await client.send(ID, 'light');
+  await client.send(ID, 'massageTimer');
+  assert.equal(fake.calls.stopped, 1);
+  fail = true;
+  await assert.rejects(client.send(ID, 'light'));
+  assert.equal(frames.length, 3);
+  assert.equal(fake.calls.stopped, 1);
+  fail = false;
+  await client.send(ID, 'light');
+  assert.equal(fake.calls.stopped, 2);
+  assert.equal(frames.length, 4);
+});
 test('all fourteen controls retain known protocol codes and frame checksums', () => {
   assert.equal(Object.keys(COMMANDS).length, 14);
   assert.equal(encode(COMMANDS.headUp.code).toString('hex'), 'aa03000a00040101000000f9f355');

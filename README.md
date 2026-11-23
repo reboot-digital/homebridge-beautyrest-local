@@ -1,5 +1,6 @@
 # Beautyrest Local for Homebridge
 
+[![Verified by Homebridge](https://img.shields.io/badge/homebridge-verified-blueviolet?color=%23491F59&style=flat)](https://github.com/homebridge/plugins/issues/1385)
 [![Tests](https://github.com/reboot-digital/homebridge-beautyrest-local/actions/workflows/test.yml/badge.svg)](https://github.com/reboot-digital/homebridge-beautyrest-local/actions/workflows/test.yml)
 
 **Your adjustable bed, in Apple Home. Local control. No relay subscription.**
@@ -38,7 +39,7 @@ Other beds are **unconfirmed**, including other Beautyrest models and other Kees
 Requirements:
 
 - Homebridge **1.8.x or later 1.x**, or **2.x**; an existing Apple Home setup.
-- Node.js **20 or later**. Prefer a [currently supported Homebridge Node.js version](https://github.com/homebridge/homebridge/wiki/How-To-Update-Node.js).
+- Node.js **22.12+ (22.x), 24.x or 26.x**. Prefer a [currently supported Homebridge Node.js version](https://github.com/homebridge/homebridge/wiki/How-To-Update-Node.js).
 - The bed already connected to Wi-Fi using its normal app.
 - IPv4 connectivity from Homebridge to the controllers, plus mDNS/multicast discovery. Guest isolation and separate VLANs can prevent discovery.
 
@@ -48,29 +49,41 @@ A Home hub is needed for remote access and HomeKit automations under Apple’s n
 
 The distribution package is named **`homebridge-beautyrest-local`** and the platform is **`BeautyrestLocal`**.
 
-### GitHub release download
+### Homebridge UI (recommended)
 
-Download the `.tgz` package from [Releases](https://github.com/reboot-digital/homebridge-beautyrest-local/releases). On the Homebridge host, install the downloaded package with npm using your installation’s normal permissions:
+1. Open **Plugins** in Homebridge UI and search for **`homebridge-beautyrest-local`**.
+2. Install **Beautyrest Local** by RebootDigital.
+3. Add your controller IDs and side names using the settings below, then restart Homebridge.
 
-```sh
-npm install -g ./homebridge-beautyrest-local-1.3.0.tgz
-```
+If a broad search finds no results, use the full package name above.
 
-Restart Homebridge after adding configuration below. Do not install a second copy alongside an existing local copy.
+### npm
 
-### Homebridge plugin search / npm
-
-The plugin is distributed on [npm](https://www.npmjs.com/package/homebridge-beautyrest-local). Search Homebridge UI for `homebridge-beautyrest-local`, or install from npm:
+On the Homebridge host, use your installation’s normal permissions:
 
 ```sh
-npm install -g homebridge-beautyrest-local@1.3.0
+npm install -g homebridge-beautyrest-local@1.3.1
 ```
 
-If a broad search finds no results, search for the full package name: `homebridge-beautyrest-local`.
+### Manual download
+
+Download the `.tgz` package from [Releases](https://github.com/reboot-digital/homebridge-beautyrest-local/releases), then install it on the Homebridge host:
+
+```sh
+npm install -g ./homebridge-beautyrest-local-1.3.1.tgz
+```
+
+Configure and restart Homebridge. Install only one copy of the plugin.
+
+### Updating an existing installation
+
+Use the plugin’s update option in Homebridge UI, then restart Homebridge. Keep your existing controller IDs and platform entry: normal updates preserve accessory identities and do not require pairing again. Apple Home can retain custom accessory names.
+
+For the original private 1.1.1 development package, install the npm release in place once; that version does not check for public updates. Back up Homebridge before updating. Do not uninstall the plugin, reset Homebridge, or remove its cached accessories as an update step.
 
 ## Find your controller IDs
 
-The plugin discovers each base by its controller ID, so you do not need a fixed IP address. Each ID has **12 hexadecimal characters**. On the Homebridge host, after installing the package, run:
+The plugin discovers each base by its controller ID, so you do not need a fixed IP address. Each ID has **12 hexadecimal characters**. Discovered addresses are kept in memory for up to 60 seconds and discarded after communication failures; you still do not need fixed IP addresses. On the Homebridge host, after installing the package, run:
 
 ```sh
 beautyrest-discover
@@ -133,6 +146,7 @@ Use explicit positions for predictable scenes. Light and massage are toggles: re
 
 | Symptom | Check |
 | --- | --- |
+| Configuration error after an update | Existing accessories are preserved but unavailable until settings are corrected. Check side names and controller IDs, then restart. |
 | No controls after restart | Configure one or two sides with distinct 12-character hexadecimal IDs and nonempty names. Check the Homebridge log. |
 | Communication failure | Confirm power/Wi-Fi, the controller ID, mDNS access and TCP 5000 connectivity from the Homebridge host. Fixed IPs do not replace discovery. |
 | A button shows Off immediately | Expected: switches are momentary and do not show the physical state. |
