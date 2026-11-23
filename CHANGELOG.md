@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- Add optional per-side names for Position 1 and Position 2. Blank or omitted labels keep existing names; labels do not change saved positions or accessory identifiers.
+- Add controller-ID discovery instructions and preset-label explanations to the Homebridge configuration screen.
+- Expand README discovery guidance with Homebridge Terminal instructions and network troubleshooting.
+
 ## 1.4.0 — 2026-11-23
 
 - Add per-side control selection in Homebridge UI and JSON configuration. All 14 controls remain enabled by default; only explicit `false` selections remove accessories.

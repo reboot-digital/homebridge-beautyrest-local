@@ -83,13 +83,15 @@ For the original private 1.1.1 development package, install the npm release in p
 
 ## Find your controller IDs
 
-The plugin discovers each base by its controller ID, so you do not need a fixed IP address. Each ID has **12 hexadecimal characters**. Discovered addresses are kept in memory for up to 60 seconds and discarded after communication failures; you still do not need fixed IP addresses. On the Homebridge host, after installing the package, run:
+The plugin discovers each base by its controller ID, so you do not need a fixed IP address. Each ID has **12 hexadecimal characters**. Discovered addresses are kept in memory for up to 60 seconds and discarded after communication failures; you still do not need fixed IP addresses. After installing the plugin, open **Homebridge UI → Terminal** on the Homebridge host (not a terminal on an unrelated computer) and run:
 
 ```sh
 beautyrest-discover
 ```
 
-This listens to local mDNS advertisements for 10 seconds. It never sends a bed command. Keep the reported IDs private.
+The bed must already be connected to Wi-Fi and reachable from Homebridge. The utility listens to local mDNS advertisements for 10 seconds without moving the bed. Copy the value after **Controller ID:** into the matching side’s **Controller ID** field in plugin settings. One base needs one ID; two independent bases need two distinct IDs. Keep the reported IDs private.
+
+If no controllers are found, check that the bases have power and Wi-Fi and that guest-network isolation, VLANs or multicast filtering are not blocking discovery. Do not substitute an IP address or guess an ID from the Wi-Fi MAC address.
 
 For manual discovery on macOS, `dns-sd -B _keeson._tcp local.` lists services; resolve each advertised service with `dns-sd -L "SERVICE NAME" _keeson._tcp local.` and look for `bedinfo` → `device_id`. Press Control-C to stop browsing. Do not assume a controller ID is the same as a printed serial number or Wi-Fi MAC address.
 
@@ -117,6 +119,18 @@ Example platform entry for `config.json` (replace both example IDs):
 These IDs are placeholders. Add this object to your existing `platforms` array; do not replace your full Homebridge configuration. For one base, keep just one side entry. Names must be nonempty and controller IDs unique.
 
 With all controls enabled, the plugin creates **14 switch accessories per side**, for 14 or 28 controls total. Move them to a dedicated room, such as **ErgoBed**, in Apple Home. Accessory identities are based on controller ID and command, so changing a side name keeps their identifiers. Apple Home can retain names you have customized there.
+
+### Custom preset labels (next release; not yet published)
+
+Each side has optional **Position 1 name** and **Position 2 name** fields. Leave them blank for the existing names, or enter names such as **Reading** and **Lounge** to match the positions saved in that base. The side name is included automatically: **My Side Reading**.
+
+For JSON configuration, set `preset1Name` and/or `preset2Name` on the relevant side:
+
+```json
+{ "name": "My Side", "id": "aabbccddeeff", "preset1Name": "Reading", "preset2Name": "Lounge" }
+```
+
+Save and restart Homebridge. These labels only rename the two recall controls; they do not program a new position or overwrite the base’s saved presets. Set the positions using the physical remote or manufacturer app first. Renaming keeps the existing accessory identifiers. Apple Home may retain names you have customized there; adjust those names in Home if needed.
 
 ### Choose which controls appear
 

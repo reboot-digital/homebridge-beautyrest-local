@@ -180,3 +180,40 @@ test('settings GUI offers all known controls, enabled by default and optional', 
     assert.equal(property.type, 'boolean'); assert.equal(property.default, true);
   }
 });
+
+test('custom preset labels keep cached identities and forward the original recall commands', async () => {
+  const old = await setup(); old.api.emit('didFinishLaunching');
+  const calls = [];
+  const next = await setup({ sides: [{ ...sides[0], preset1Name: ' Reading ', preset2Name: 'Lounge' }, sides[1]] }, async (id, command) => calls.push([id, command]));
+  for (const accessory of old.registered) next.platform.configureAccessory(accessory);
+  next.api.emit('didFinishLaunching');
+  assert.equal(next.registered.length, 0); assert.equal(next.removed.length, 0); assert.equal(next.updated.length, 2);
+  for (const [label, command] of [['Reading', 'preset1'], ['Lounge', 'preset2']]) {
+    const accessory = next.updated.find(a => a.displayName === 'Side A ' + label);
+    assert.ok(old.registered.includes(accessory));
+    assert.equal(accessory.UUID, next.api.hap.uuid.generate('homebridge-beautyrest-local:' + sides[0].id + ':' + command));
+    assert.equal(accessory.getService(next.api.hap.Service.Switch).getCharacteristic(next.api.hap.Characteristic.Name).value, 'Side A ' + label);
+    const on = accessory.getService(next.api.hap.Service.Switch).getCharacteristic(next.api.hap.Characteristic.On);
+    await on.handleSetRequest(true); await delay(480);
+    assert.equal(on.value, false);
+  }
+  assert.deepEqual(calls, [[sides[0].id, 'preset1'], [sides[0].id, 'preset2']]);
+  const reset = await setup();
+  for (const accessory of old.registered) reset.platform.configureAccessory(accessory);
+  reset.api.emit('didFinishLaunching');
+  assert.equal(reset.registered.length, 0); assert.equal(reset.removed.length, 0);
+  assert.deepEqual(reset.updated.map(a => a.displayName).sort(), ['Side A Position 1', 'Side A Position 2']);
+});
+
+test('blank labels keep default names and invalid labels leave cached controls untouched', async () => {
+  const old = await setup({ sides: [{ ...sides[0], preset1Name: '', preset2Name: '   ' }, sides[1]] }); old.api.emit('didFinishLaunching');
+  assert.ok(old.registered.some(a => a.displayName === 'Side A Position 1'));
+  assert.ok(old.registered.some(a => a.displayName === 'Side A Position 2'));
+  for (const value of [null, false, 12, {}, [], 'x'.repeat(65)]) {
+    const next = await setup({ sides: [{ ...sides[0], preset1Name: value }, sides[1]] });
+    for (const accessory of old.registered) next.platform.configureAccessory(accessory);
+    next.api.emit('didFinishLaunching');
+    assert.equal(next.registered.length, 0); assert.equal(next.removed.length, 0); assert.equal(next.updated.length, 0);
+    assert.ok(next.messages.some(m => m.level === 'error'));
+  }
+});

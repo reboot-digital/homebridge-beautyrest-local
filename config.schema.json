@@ -29,7 +29,21 @@
               "title": "Controller ID",
               "type": "string",
               "pattern": "^[0-9A-Fa-f]{12}$",
-              "description": "12 hexadecimal characters from the controller\u2019s mDNS bedinfo.device_id. No IP address or cloud login."
+              "description": "After installing the plugin, open Homebridge UI \u2192 Terminal on the Homebridge host and run beautyrest-discover. It listens for 10 seconds without moving the bed and prints each 12-character Controller ID. Copy one ID per side. The bed must already be on Wi-Fi and reachable on the same local network. Discovery order does not identify left/right; do not guess from a MAC address. Keep IDs private. See the README for manual macOS discovery and troubleshooting."
+            },
+            "preset1Name": {
+              "title": "Position 1 name (optional)",
+              "type": "string",
+              "maxLength": 64,
+              "description": "Leave blank for Position 1, or use Reading, Lounge or another name matching the position saved in this base. The side name is added automatically (for example My Side Reading). This only renames the recall button; it does not save or change the bed\u2019s position. Save and restart Homebridge. Apple Home may keep a name you customized there.",
+              "placeholder": "Position 1"
+            },
+            "preset2Name": {
+              "title": "Position 2 name (optional)",
+              "type": "string",
+              "maxLength": 64,
+              "description": "Leave blank for Position 2, or use Reading, Lounge or another name matching the position saved in this base. The side name is added automatically (for example My Side Reading). This only renames the recall button; it does not save or change the bed\u2019s position. Save and restart Homebridge. Apple Home may keep a name you customized there.",
+              "placeholder": "Position 2"
             },
             "controls": {
               "title": "Controls in Apple Home",

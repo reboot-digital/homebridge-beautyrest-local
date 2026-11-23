@@ -26,10 +26,12 @@ class BeautyrestLocal {
     const ids = sides.map(side => String(side?.id ?? '').toLowerCase());
     if (sides.length < 1 || sides.length > 2 || new Set(ids).size !== sides.length ||
         sides.some((side, index) => !side?.name?.trim?.() || !/^[0-9a-f]{12}$/.test(ids[index]) ||
+          ['preset1Name', 'preset2Name'].some(key => side[key] !== undefined &&
+            (typeof side[key] !== 'string' || side[key].length > 64)) ||
           (side.controls !== undefined && (side.controls === null || typeof side.controls !== 'object' ||
             Array.isArray(side.controls) || Object.entries(side.controls).some(([command, enabled]) =>
               !Object.hasOwn(COMMANDS, command) || typeof enabled !== 'boolean'))))) {
-      log.error('Check side names, unique 12-character controller IDs and control selections (true/false). Existing accessories are retained but unavailable until configuration is corrected.');
+      log.error('Check side names, unique 12-character controller IDs, optional preset names (text, up to 64 characters) and control selections (true/false). Existing accessories are retained but unavailable until configuration is corrected.');
       return;
     }
 
@@ -38,7 +40,9 @@ class BeautyrestLocal {
       const id = ids[index];
       for (const [command, description] of Object.entries(COMMANDS)) {
         if (side.controls?.[command] === false) continue;
-        const name = side.name.trim() + ' ' + description.name;
+        const label = command === 'preset1' || command === 'preset2'
+          ? side[command + 'Name']?.trim() || description.name : description.name;
+        const name = side.name.trim() + ' ' + label;
         const key = uuid.generate(PLUGIN + ':' + id + ':' + command);
         desired.add(key);
 
