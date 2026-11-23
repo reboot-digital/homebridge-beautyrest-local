@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Add a short quick-start guide, supervised-testing precautions and a visible warranty/liability notice linked to the MIT license.
+- Document saving I/II presets on the pictured remote using the manufacturer’s instructions, and explain their Position 1/2 mapping and custom labels in Apple Home.
 - Add a Discover beds button to plugin settings, with read-only local scanning and explicit assignment to empty side slots. Existing configurations are preserved and changes are not auto-saved.
 - Add optional per-side names for Position 1 and Position 2. Blank or omitted labels keep existing names; labels do not change saved positions or accessory identifiers.
 - Add controller-ID discovery instructions and preset-label explanations to the Homebridge configuration screen.

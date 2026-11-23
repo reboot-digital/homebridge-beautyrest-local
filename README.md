@@ -9,7 +9,19 @@ Control one base or two independently paired sides of a compatible Beautyrest ad
 
 Built and maintained by **RebootDigital**. This is an independent community project, not an official Beautyrest, Keeson, Ergomotion, Apple, or Homebridge product.
 
-[☕ Buy me a coffee](https://buymeacoffee.com/rebootdigital) · [Installation](#installation) · [Compatibility](#compatibility) · [Controls](#controls) · [Troubleshooting](#troubleshooting) · [Report an issue](https://github.com/reboot-digital/homebridge-beautyrest-local/issues)
+[☕ Buy me a coffee](https://buymeacoffee.com/rebootdigital) · [Quick start](#quick-start) · [Compatibility](#compatibility) · [Testing safely](#testing-safely) · [Controls](#controls) · [Troubleshooting](#troubleshooting) · [Report an issue](https://github.com/reboot-digital/homebridge-beautyrest-local/issues)
+
+## Quick start
+
+**For compatible Wi-Fi bases; check [compatibility](#compatibility) first.** The Discover beds button and custom preset names below are prepared for the next release and are not yet published in 1.4.0.
+
+1. **Connect the bed to Wi-Fi** using its normal manufacturer app.
+2. **Install the plugin:** in Homebridge UI → Plugins, search for `homebridge-beautyrest-local`, install **Beautyrest Local** by RebootDigital, and open its settings.
+3. **Find your bases:** click **Discover beds**, then **Use for Side 1** and, if needed, **Use for Side 2**. Match each controller to its physical side; discovery order does not tell you which is which. For the current 1.4.0 release, use the [controller-ID instructions](#find-your-controller-ids) instead.
+4. **Name and save:** use short names such as **My Side / Other Side** or **His Side / Her Side**. Leave all controls enabled to start, then **Save and restart Homebridge**.
+5. **Open Apple Home:** if Homebridge is already paired, the controls appear without pairing again. For a new Homebridge setup or newly created child bridge, follow Homebridge UI’s pairing instructions once. Put the controls in a bed room, then follow [Testing safely](#testing-safely) before trying a button.
+
+Want a **Reading** or **Lounge** button? [Save the position with the physical remote](#set-your-saved-positions), then give its Position 1 or Position 2 control a matching name in plugin settings. To reduce clutter, see [Keep Apple Home uncluttered](#keep-apple-home-uncluttered).
 
 ## In Apple Home
 
@@ -44,6 +56,20 @@ Requirements:
 - IPv4 connectivity from Homebridge to the controllers, plus mDNS/multicast discovery. Guest isolation and separate VLANs can prevent discovery.
 
 A Home hub is needed for remote access and HomeKit automations under Apple’s normal requirements. The plugin itself sends commands only over the local network.
+
+## Testing safely
+
+**Bed controls can cause real movement. Test in person with the physical remote available.** Follow your base’s own operating instructions and safety limits.
+
+- Keep children, pets, hands and objects clear of moving parts and the space beneath the base. Make sure nobody could be trapped or surprised by movement.
+- Confirm the correct side before testing. Try one command on one base at a time, watch what happens, and wait for movement to finish before continuing.
+- Discovery only listens for controllers; pressing a movement, preset or massage control can operate the bed. A switch returning to Off does not confirm the bed stopped.
+- If movement is unexpected or does not stop, use the physical remote as described in the manufacturer’s instructions and stop testing. Do not keep retrying commands after errors; a command may already have reached the base.
+- Keep movement out of unattended or repeating automations. The plugin provides no obstruction detection or guaranteed emergency stop; a network failure can prevent a stop command from arriving.
+
+## Use at your own risk
+
+This independent community plugin is provided **“as is,” without warranty**. You are responsible for checking compatibility, configuring it correctly and supervising operation. To the maximum extent permitted by applicable law, RebootDigital and the project’s contributors accept no liability for injury, property damage, loss or other claims arising from use of the software. See the [MIT license](LICENSE) for the full warranty disclaimer and limitation of liability. This notice does not exclude liability that cannot legally be excluded.
 
 ## Installation
 
@@ -132,7 +158,19 @@ For JSON configuration, set `preset1Name` and/or `preset2Name` on the relevant s
 { "name": "My Side", "id": "aabbccddeeff", "preset1Name": "Reading", "preset2Name": "Lounge" }
 ```
 
-Save and restart Homebridge. These labels only rename the two recall controls; they do not program a new position or overwrite the base’s saved presets. Set the positions using the physical remote or manufacturer app first. Renaming keeps the existing accessory identifiers. Apple Home may retain names you have customized there; adjust those names in Home if needed.
+Save and restart Homebridge. These labels only rename the two recall controls; they do not program a new position or overwrite the base’s saved presets. [Set the positions using the physical remote first](#set-your-saved-positions). Renaming keeps the existing accessory identifiers. Apple Home may retain names you have customized there; adjust those names in Home if needed.
+
+### Set your saved positions
+
+For the **pictured Beautyrest Black Luxury remote with I and II buttons**, the manufacturer’s [owner’s manual, printed page 12 (PDF page 14)](https://images.thdstatic.com/catalog/pdfImages/96/96525632-2a07-5173-aac0-c73acf82a35e.pdf#page=14) specifies this procedure. Other models may differ; use the instructions supplied with your base if its remote or procedure differs.
+
+1. Follow [Testing safely](#testing-safely), and use the remote paired to the intended base.
+2. Use the remote’s head and foot arrows to reach the position you want to store.
+3. Hold **I for 7 seconds**, then release, to save **Position 1**. Use **II for 7 seconds** to save **Position 2** instead. **Saving replaces that button’s previous position.**
+4. With the area clear, move to another position, then briefly press the same I or II button to check recall with the remote first.
+5. In Apple Home, turn on that side’s **Position 1** or **Position 2** switch once to check it recalls the same position. In the next release, these may have your custom names, such as **My Side Reading**.
+
+For independently controlled split bases, repeat separately with each base’s own remote and check each side. The plugin recalls **I → Position 1** and **II → Position 2**; renaming a button does not change its stored position. No HomeKit re-pairing is needed when changing a saved position. Do not use a factory-reset procedure to save presets.
 
 ### Choose which controls appear
 

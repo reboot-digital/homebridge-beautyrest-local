@@ -18,6 +18,12 @@ This is the owner-provided Beautyrest Black remote used with the tested split-be
 | Separate head and foot massage buttons | Massage Toggle | Partial: plugin starts both motors if both are off, otherwise attempts to turn both off. Individual zones and intensity selection are not exposed. |
 | Hold I / II to save positions | No plugin equivalent | Use the physical remote. The plugin does not overwrite presets. |
 
+## Save positions for the Apple Home buttons
+
+Follow the [remote preset setup instructions in the README](../README.md#set-your-saved-positions). For the pictured remote, save I for Position 1 and II for Position 2 on the intended base, verify recall using the remote, then test the corresponding Apple Home button in person. The README links the manufacturer’s model-specific procedure; other remotes can differ. Saving replaces the previous preset, while a custom plugin label only changes its name.
+
+Read [Testing safely](../README.md#testing-safely) before operating the base. The software’s [use-at-your-own-risk notice and license terms](../README.md#use-at-your-own-risk) also apply.
+
 ## Timer behavior
 
 Massage Timer Cycle mirrors the remote button by asking the controller to advance its own timer selection. The controller handles the timing, independently of the Homebridge process. The plugin neither starts a Homebridge countdown nor assumes that one press always means 10 minutes.
